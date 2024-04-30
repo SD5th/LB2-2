@@ -14,4 +14,5 @@ int main()
     arr.Set(2, 999);
     arr.printall();
     cout << arr.GetFirst() << endl << arr.GetLast();
+    cout << "bigsiski";
 }
