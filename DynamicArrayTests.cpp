@@ -47,11 +47,10 @@ void testCopyConstructor()
     assert(arr2.GetSize() == arr1.GetSize());
     assert(arr2.GetCapacity() == arr1.GetCapacity());
 
-    // Check if elements are copied correctly (separate memory)
     for (int i = 0; i < 10; ++i)
     {
         assert(arr2.Get(i) == arr1.Get(i));
-        assert(arr2.GetData() != arr1.GetData()); // Different memory locations
+        assert(arr2.GetData() != arr1.GetData()); 
     }
     std::cout << "testCopyConstructor: OK\n";
 }
@@ -101,7 +100,7 @@ void testSetNegativeIndex_ThrowsException()
     try
     {
         arr.Set(-1, 3.14);
-        assert(false); // This should not be reached
+        assert(false); 
     }
     catch (const IndexOutOfRange &excep)
     {
@@ -116,7 +115,7 @@ void testSetOutOfSizeIndex_ThrowsException()
     try
     {
         arr.Set(3, 'X');
-        assert(false); // This should not be reached
+        assert(false); 
     }
     catch (const IndexOutOfRange &excep)
     {
@@ -190,7 +189,7 @@ void testGetSubsequence()
     assert(sub->Get(1) == 3);
     assert(sub->Get(2) == 4);
 
-    delete sub; // Manually delete the dynamically allocated subarray
+    delete sub; 
     std::cout << "testGetSubsequence: OK\n";
 }
 
@@ -200,7 +199,7 @@ void testGetSubsequence_ThrowsException_NegativeStartIndex()
     try
     {
         arr.GetSubsequence(-1, 2);
-        assert(false); // This should not be reached
+        assert(false); 
     }
     catch (const IndexOutOfRange &excep)
     {
@@ -215,7 +214,7 @@ void testGetSubsequence_ThrowsException_StartIndexGreaterThanEndIndex()
     try
     {
         arr.GetSubsequence(3, 2);
-        assert(false); // This should not be reached
+        assert(false); 
     }
     catch (const IndexOutOfRange &excep)
     {
@@ -229,8 +228,8 @@ void testGetSubsequence_ThrowsException_EndIndexOutOfSize()
     DynamicArray<int> arr(3);
     try
     {
-        arr.GetSubsequence(1, 4); // EndIndex = 4 (out of size)
-        assert(false);            // This should not be reached
+        arr.GetSubsequence(1, 4);
+        assert(false);           
     }
     catch (const IndexOutOfRange &excep)
     {
