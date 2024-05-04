@@ -1,10 +1,9 @@
 #include <iostream>
-using namespace std;
 
-class IndexOutOfRange : public exception
+class IndexOutOfRange : public std::exception
 {
     public:
-        IndexOutOfRange(const char* msg) : exception(){
+        IndexOutOfRange(const char* msg) : std::exception(){
             this->msg = msg;
         }
         const char* what() const noexcept override{
@@ -30,7 +29,6 @@ template <class T> class DynamicArray
             this->size = count;
             this->capacity = count * 2;
             this->data = new T [this->capacity];
-            cout << "\nВызван пустой конструктор на count элементов.\n";
         }
 
         DynamicArray(T* items, int count)   //Копировать элементы из статического массива
@@ -41,9 +39,7 @@ template <class T> class DynamicArray
 
             for (int i = 0; i < this->size; i++){
                 *(data + i) = *(items + i);
-                cout << *(items + i) << ' ';
             }
-            cout << "\nВызван конструктор с копированием из статического массива.\n";
         }
 
         DynamicArray(const DynamicArray & dynamicArray) //Копировать другой DynamicArray
@@ -54,8 +50,6 @@ template <class T> class DynamicArray
 
             for (int i = 0; i < this->size; i++)
                 *(this->data + i) = *(dynamicArray.data + i);
-
-            cout << "\nВызван конструктор с копированием из DynamicArray.\n";
         }
 
         DynamicArray()             //Пустой конструктор
@@ -63,9 +57,14 @@ template <class T> class DynamicArray
             this->size = 0;
             this->capacity = 0;
             this->data = nullptr;
-            cout << "\nВызван пустой конструктор.\n";
         }
+    //деструктор
 
+        ~DynamicArray()
+        {
+            delete[] data; 
+        }
+        
     //декомпозиция
 
         T GetFirst()        //Получить первый элемент
@@ -78,12 +77,17 @@ template <class T> class DynamicArray
             return *(this->data+GetSize()-1);
         }
 
+        T* GetData()
+        {
+            return this->data;
+        }
+
         T Get(int index)    //Получить элемент по индексу
         {
             if (index < 0) 
                 throw IndexOutOfRange("Function 'Get': Negative index.");
             if (index >= this->size) 
-                throw IndexOutOfRange("Function 'Get': Index is bigger than size.");
+                throw IndexOutOfRange("Function 'Get': Index is greater than size.");
             return *(this->data + index);
         }
 
@@ -92,12 +96,12 @@ template <class T> class DynamicArray
             if (startIndex < 0)
                 throw IndexOutOfRange("Function 'GetSubsequence': Negative startIndex.");
             if (startIndex > endIndex)
-                throw IndexOutOfRange("Function 'GetSubsequence': startIndex is more than endIndex.");
+                throw IndexOutOfRange("Function 'GetSubsequence': startIndex is greater than endIndex.");
             if (endIndex >= this->GetSize())
-                throw IndexOutOfRange("Function 'GetSubsequence': endIndex is equal or more than size.");
+                throw IndexOutOfRange("Function 'GetSubsequence': endIndex is equal or greater than size.");
             
-            DynamicArray<T>* output = new DynamicArray<T>(endIndex - startIndex);
-            for (int i = startIndex; i++; i <= endIndex)
+            DynamicArray<T>* output = new DynamicArray<T>(endIndex - startIndex + 1);
+            for (int i = startIndex; i <= endIndex; i++)
             {
                 (*output).Set(i - startIndex, this->Get(i));
             }
@@ -121,7 +125,7 @@ template <class T> class DynamicArray
             if (index < 0) 
                 throw IndexOutOfRange("Function 'Set': Negative index.");
             if (index >= this->size) 
-                throw IndexOutOfRange("Function 'Set': Index is bigger than size.");
+                throw IndexOutOfRange("Function 'Set': Index is greater than size.");
             *(this->data + index) = value;
         }
 
@@ -134,7 +138,7 @@ template <class T> class DynamicArray
             else
             {
                 T* data_temp = new T [newSize * 2];
-                for (int i = 0; i < min(this->size, newSize); i++)
+                for (int i = 0; i < std::min(this->size, newSize); i++)
                 {
                     *(data_temp + i) = *(this->data + i);
                 }
@@ -179,19 +183,19 @@ template <class T> class DynamicArray
 
         void Append(T item)
         {
-            this->InsertAt(this->size, item);
+            this->Insert(this->size, item);
         }
 
         void Prepend(T item)
         {
-            this->InsertAt(0, item);
+            this->Insert(0, item);
         }
 
-        DynamicArray<T>* Concat(const DynamicArray<T> & array)
+        DynamicArray<T>* Concat(DynamicArray<T> & array)
         {
-            DynamicArray<T>* output = new DynamicArray<T>(this);
+            DynamicArray<T> * output = new DynamicArray<T>(*this);
             (*output).Resize(this->GetSize() + array.GetSize());
-            for (int i = this->GetSize(); i < output.GetSize(); i++)
+            for (int i = this->GetSize(); i < output->GetSize(); i++)
             {
                 (*output).Set(i, array.Get(i-this->GetSize()));
             }
@@ -201,12 +205,12 @@ template <class T> class DynamicArray
     //вспомогательное
         void printall()
         {
-            cout << "\nSize: " << this->GetSize();
-            cout << "\nCapacity: " << this->GetCapacity() << " (" << this->GetCapacity() * sizeof(T) << " bytes)";
-            cout << "\nData: \n";
+            std::cout << "Size: " << this->GetSize();
+            std::cout << "\nCapacity: " << this->GetCapacity() << " (" << this->GetCapacity() * sizeof(T) << " bytes)";
+            std::cout << "\nData: \n";
             for (int i = 0; i < this->size; i++)
-                cout << this->Get(i) << ' ';
-            cout << "\n\n";
+                std::cout << this->Get(i) << ' ';
+            std::cout << "\n";
         }
 };
 
@@ -245,7 +249,7 @@ template <class T> class LinkedList
                     this->Append(*(items+i));
                 }
             }
-            cout << "\nВызван конструктор с копированием из статического массива.\n";
+            std::cout << "\nВызван конструктор с копированием из статического массива.\n";
         }
 
         LinkedList (const LinkedList <T> & list)
@@ -261,14 +265,14 @@ template <class T> class LinkedList
                 current_list = (*current_list).next;
             }
             this->Append((*current_list).item);
-            cout << "\nВызван конструктор с копированием из LinkedList.\n";
+            std::cout << "\nВызван конструктор с копированием из LinkedList.\n";
         }
 
         LinkedList()
         {
             this->head = nullptr;
             this->tail = nullptr;
-            cout << "\nВызван пустой конструктор.\n";
+            std::cout << "\nВызван пустой конструктор.\n";
 
         }
     
@@ -306,9 +310,9 @@ template <class T> class LinkedList
             if (startIndex < 0)
                 throw IndexOutOfRange("Function 'GetSubsequence': Negative startIndex.");
             if (startIndex > endIndex)
-                throw IndexOutOfRange("Function 'GetSubsequence': startIndex is more than endIndex.");
+                throw IndexOutOfRange("Function 'GetSubsequence': startIndex is greater than endIndex.");
             if (endIndex >= this->GetSize())
-                throw IndexOutOfRange("Function 'GetSubsequence': endIndex is equal or more than size.");
+                throw IndexOutOfRange("Function 'GetSubsequence': endIndex is equal or greater than size.");
             LinkedList<T>* output = new LinkedList;
             Node* start = this->head;
             for (int i = 0; i < startIndex; i++)
@@ -395,7 +399,8 @@ template <class T> class LinkedList
         LinkedList<T> * Concat (const LinkedList<T> & list)
         {
             LinkedList<T>* output = new LinkedList(this);
-            for (Node* current = list.head; current != list.tail; current = (*current).next)
+            Node* current;
+            for (current = list.head; current != list.tail; current = (*current).next)
                 (*output).Append((*current).item);
             (*output).Append((*current).item);
             return output;  
@@ -403,11 +408,11 @@ template <class T> class LinkedList
 
         void printall()
         {
-            cout << "\nSize: " << this->GetSize();
-            cout << "\nData: \n";
+            std::cout << "Size: " << this->GetSize();
+            std::cout << "\nData: \n";
             for (int i = 0; i < this->GetSize(); i++)
-                cout << this->Get(i) << ' ';
-            cout << "\n\n";
+                std::cout << this->Get(i) << ' ';
+            std::cout << "\n";
         }
 };
 
