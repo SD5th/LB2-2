@@ -24,12 +24,14 @@ template <class T> class DynamicArray
     public:
     //конструкторы
 
-        DynamicArray(int count) :   size(count), 
+        DynamicArray(int count) :   
+            size(count), 
                                     capacity(count*2), 
                                     data(new T [count*2]) 
         { }
 
-        DynamicArray(T* items, int count) : size(count), 
+        DynamicArray(T* items, int count) : 
+            size(count), 
                                             capacity(count*2), 
                                             data(new T [count*2])
         { 
@@ -37,7 +39,8 @@ template <class T> class DynamicArray
                 *(data + i) = *(items + i);
         }
 
-        DynamicArray(DynamicArray & dynamicArray) :   size(dynamicArray.size), 
+        DynamicArray(DynamicArray & dynamicArray) : 
+            size(dynamicArray.size), 
                                                             capacity(dynamicArray.capacity), 
                                                             data(new T [dynamicArray.capacity])
         {
@@ -45,7 +48,8 @@ template <class T> class DynamicArray
                 *(this->data + i) = *(dynamicArray.data + i);
         }
 
-        DynamicArray(): size(0), 
+        DynamicArray(): 
+            size(0), 
                         capacity(0), 
                         data(nullptr)            
         { }
@@ -119,6 +123,11 @@ template <class T> class DynamicArray
             if (index >= this->size) 
                 throw IndexOutOfRange("Function 'Set': Index is greater than size.");
             *(this->data + index) = value;
+        }
+
+        void SetData(T* newdata)
+        {
+            this->data = newdata;
         }
 
         void Resize(int newSize)        
@@ -208,7 +217,7 @@ template <class T> class DynamicArray
 
 template <class T> class LinkedList
 {
-    private:
+    public:
         struct Node
         {
             T item;
@@ -223,10 +232,6 @@ template <class T> class LinkedList
                 this->next = nullptr;
             }
         };
-        
-        Node* head;           
-        Node* tail;            
-    public:
     //конструкторы
         LinkedList(T* items, int count) :   head(nullptr),
                                             tail(nullptr)
@@ -284,7 +289,14 @@ template <class T> class LinkedList
         }
 
     //декомпозиция
-        
+        Node* GetHead()
+        {
+            return this->head;
+        }
+        Node* GetTail()
+        {
+            return this->tail;
+        }
         T GetFirst()
         {
             if (this->head == nullptr)
@@ -432,5 +444,8 @@ template <class T> class LinkedList
                 std::cout << this->Get(i) << ' ';
             std::cout << "\n";
         }
+        
+        private:
+            Node* head;           
+            Node* tail;  
 };
-
