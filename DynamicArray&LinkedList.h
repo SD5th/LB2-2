@@ -251,6 +251,21 @@ template <class T> class LinkedList
             }
         }
 
+        LinkedList(int count) : head(nullptr),
+                                tail(nullptr)
+        {
+            if (count < 0)
+                throw IndexOutOfRange("Constructor(count): Negative count.");
+            if (count == 0)
+                return;
+            this->head = new Node;
+            Node* current = this->head;
+            for (int i = 1; i < count; i++){
+                current->next = new Node;
+                current = current->next;
+            }
+            this->tail = current;
+        }
         LinkedList() :  head(nullptr),
                         tail(nullptr)
         { }
