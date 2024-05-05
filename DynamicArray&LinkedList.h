@@ -24,40 +24,32 @@ template <class T> class DynamicArray
     public:
     //конструкторы
 
-        DynamicArray(int count)             //Пустой конструктор
-        {
-            this->size = count;
-            this->capacity = count * 2;
-            this->data = new T [this->capacity];
-        }
+        DynamicArray(int count) :   size(count), 
+                                    capacity(count*2), 
+                                    data(new T [count*2]) 
+        { }
 
-        DynamicArray(T* items, int count)   //Копировать элементы из статического массива
+        DynamicArray(T* items, int count) : size(count), 
+                                            capacity(count*2), 
+                                            data(new T [count*2])
         { 
-            this->size = count;
-            this->capacity = count * 2;
-            this->data = new T [this->capacity];
-
-            for (int i = 0; i < this->size; i++){
+            for (int i = 0; i < count; i++)
                 *(data + i) = *(items + i);
-            }
         }
 
-        DynamicArray(const DynamicArray & dynamicArray) //Копировать другой DynamicArray
+        DynamicArray(const DynamicArray & dynamicArray) :   size(dynamicArray.size), 
+                                                            capacity(dynamicArray.capacity), 
+                                                            data(new T [dynamicArray.capacity])
         {
-            this->size = dynamicArray.size;
-            this->capacity = dynamicArray.capacity;
-            this->data = new T [this->capacity];
-
             for (int i = 0; i < this->size; i++)
                 *(this->data + i) = *(dynamicArray.data + i);
         }
 
-        DynamicArray()             //Пустой конструктор
-        {
-            this->size = 0;
-            this->capacity = 0;
-            this->data = nullptr;
-        }
+        DynamicArray(): size(0), 
+                        capacity(0), 
+                        data(nullptr)            
+        { }
+        
     //деструктор
 
         ~DynamicArray()
@@ -236,26 +228,20 @@ template <class T> class LinkedList
         Node* tail;            
     public:
     //конструкторы
-        LinkedList(T* items, int count)
+        LinkedList(T* items, int count) :   head(nullptr),
+                                            tail(nullptr)
+
         {
             if (count < 0)
                 throw IndexOutOfRange("Constructor(items, count): Negative count.");
             else
-            {
-                this->head = nullptr;
-                this->tail = nullptr;
                 for (int i = 0; i < count; i++)
-                {
                     this->Append(*(items+i));
-                }
-            }
         }
 
-        LinkedList (const LinkedList <T> & list)
-        {
-            this->head = nullptr;
-            this->tail = nullptr;
-            
+        LinkedList (const LinkedList <T> & list) :  head(nullptr),
+                                                    tail(nullptr)
+        {   
             Node* current_list = list.head;
 
             while (current_list != nullptr)
@@ -265,11 +251,9 @@ template <class T> class LinkedList
             }
         }
 
-        LinkedList()
-        {
-            this->head = nullptr;
-            this->tail = nullptr;
-        }
+        LinkedList() :  head(nullptr),
+                        tail(nullptr)
+        { }
 
     //деконструктор
         ~LinkedList()
@@ -285,7 +269,6 @@ template <class T> class LinkedList
         }
 
     //декомпозиция
-
         
         T GetFirst()
         {
