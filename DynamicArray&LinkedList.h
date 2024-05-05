@@ -37,7 +37,7 @@ template <class T> class DynamicArray
                 *(data + i) = *(items + i);
         }
 
-        DynamicArray(const DynamicArray & dynamicArray) :   size(dynamicArray.size), 
+        DynamicArray(DynamicArray & dynamicArray) :   size(dynamicArray.size), 
                                                             capacity(dynamicArray.capacity), 
                                                             data(new T [dynamicArray.capacity])
         {
@@ -239,7 +239,7 @@ template <class T> class LinkedList
                     this->Append(*(items+i));
         }
 
-        LinkedList (const LinkedList <T> & list) :  head(nullptr),
+        LinkedList (LinkedList <T> & list) :  head(nullptr),
                                                     tail(nullptr)
         {   
             Node* current_list = list.head;
@@ -414,7 +414,7 @@ template <class T> class LinkedList
             return output;  
         }
 
-        LinkedList<T> * Concat (const LinkedList<T> & list)
+        LinkedList<T> * Concat (LinkedList<T> & list)
         {
             LinkedList<T>* output = new LinkedList(*this);
             Node* current;
