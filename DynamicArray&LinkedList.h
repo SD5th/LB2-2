@@ -26,14 +26,14 @@ template <class T> class DynamicArray
 
         DynamicArray(int count) :   
             size(count), 
-                                    capacity(count*2), 
-                                    data(new T [count*2]) 
+            capacity(count*2), 
+            data(new T [count*2]) 
         { }
 
         DynamicArray(T* items, int count) : 
             size(count), 
-                                            capacity(count*2), 
-                                            data(new T [count*2])
+            capacity(count*2), 
+            data(new T [count*2])
         { 
             for (int i = 0; i < count; i++)
                 *(data + i) = *(items + i);
@@ -41,8 +41,8 @@ template <class T> class DynamicArray
 
         DynamicArray(DynamicArray & dynamicArray) : 
             size(dynamicArray.size), 
-                                                            capacity(dynamicArray.capacity), 
-                                                            data(new T [dynamicArray.capacity])
+            capacity(dynamicArray.capacity), 
+            data(new T [dynamicArray.capacity])
         {
             for (int i = 0; i < this->size; i++)
                 *(this->data + i) = *(dynamicArray.data + i);
@@ -50,10 +50,10 @@ template <class T> class DynamicArray
 
         DynamicArray(): 
             size(0), 
-                        capacity(0), 
-                        data(nullptr)            
+            capacity(0), 
+            data(nullptr)            
         { }
-        
+
     //деструктор
 
         ~DynamicArray()
@@ -65,12 +65,12 @@ template <class T> class DynamicArray
 
         T GetFirst()        //Получить первый элемент
         {
-            return *(this->data);
+            return Get(0);
         }
 
         T GetLast()         //Получить последний элемент
         {
-            return *(this->data+GetSize()-1);
+            return Get(GetSize()-1);
         }
 
         T* GetData()
@@ -84,6 +84,8 @@ template <class T> class DynamicArray
                 throw IndexOutOfRange("Function 'Get': Negative index.");
             if (index >= this->size) 
                 throw IndexOutOfRange("Function 'Get': Index is greater than size.");
+            if (this->GetSize() == 0)
+                throw IndexOutOfRange("Function 'Get': List is empty.");
             return *(this->data + index);
         }
 
@@ -216,7 +218,7 @@ template <class T> class DynamicArray
 };
 
 template <class T> class LinkedList
-{
+{          
     public:
         struct Node
         {
@@ -235,7 +237,7 @@ template <class T> class LinkedList
     //конструкторы
         LinkedList(T* items, int count) :   
             head(nullptr),
-                                            tail(nullptr)
+            tail(nullptr)
 
         {
             if (count < 0)
@@ -247,7 +249,7 @@ template <class T> class LinkedList
 
         LinkedList (LinkedList <T> & list) :  
             head(nullptr),
-                                                    tail(nullptr)
+            tail(nullptr)
         {   
             Node* current_list = list.head;
 
@@ -260,7 +262,7 @@ template <class T> class LinkedList
 
         LinkedList(int count) : 
             head(nullptr),
-                                tail(nullptr)
+            tail(nullptr)
         {
             if (count < 0)
                 throw IndexOutOfRange("Constructor(count): Negative count.");
@@ -276,7 +278,7 @@ template <class T> class LinkedList
         }
         LinkedList() :  
             head(nullptr),
-                        tail(nullptr)
+            tail(nullptr)
         { }
 
     //деконструктор
