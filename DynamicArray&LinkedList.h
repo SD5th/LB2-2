@@ -233,7 +233,8 @@ template <class T> class LinkedList
             }
         };
     //конструкторы
-        LinkedList(T* items, int count) :   head(nullptr),
+        LinkedList(T* items, int count) :   
+            head(nullptr),
                                             tail(nullptr)
 
         {
@@ -244,7 +245,8 @@ template <class T> class LinkedList
                     this->Append(*(items+i));
         }
 
-        LinkedList (LinkedList <T> & list) :  head(nullptr),
+        LinkedList (LinkedList <T> & list) :  
+            head(nullptr),
                                                     tail(nullptr)
         {   
             Node* current_list = list.head;
@@ -256,7 +258,8 @@ template <class T> class LinkedList
             }
         }
 
-        LinkedList(int count) : head(nullptr),
+        LinkedList(int count) : 
+            head(nullptr),
                                 tail(nullptr)
         {
             if (count < 0)
@@ -271,7 +274,8 @@ template <class T> class LinkedList
             }
             this->tail = current;
         }
-        LinkedList() :  head(nullptr),
+        LinkedList() :  
+            head(nullptr),
                         tail(nullptr)
         { }
 
@@ -449,3 +453,23 @@ template <class T> class LinkedList
             Node* head;           
             Node* tail;  
 };
+
+template <class T> DynamicArray<T>* LinkedListToDynamicArray (const LinkedList<T> & linkedList)
+{
+    DynamicArray<T>* dynamicArray = new DynamicArray<T>(linkedList.GetSize());
+    for (int i = 0; i < dynamicArray->GetSize(); i++)
+    {
+        dynamicArray->Set(i, linkedList.Get(i));
+    }
+    return dynamicArray;
+}
+
+template <class T> LinkedList<T>* DynamicArrayToLinkedList (const DynamicArray<T> & dynamicArray)
+{
+    LinkedList<T>* linkedList = new LinkedList<T>;
+    for (int i = 0; i < dynamicArray.GetSize(); i++)
+    {
+        linkedList->Append(dynamicArray.Get(i));
+    }
+    return linkedList;
+}
