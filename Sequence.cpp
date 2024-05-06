@@ -1,245 +1,242 @@
-#include <iostream>
-#include "DynamicArray&LinkedList.h"
+#include "Sequence.h"
 
-enum SequenceType
+// Sequence<T>
+template <typename T>
+SequenceType Sequence<T>::GetSequenceType()
 {
-    Seq,
-    Array,
-    List
-};
+    return SequenceType::Seq;
+}
 
-template <class T> class Sequence
+// ArraySequence<T>::
+// конструкторы
+template <typename T>
+SequenceType ArraySequence<T>::GetSequenceType()
 {
-    public:
-        virtual SequenceType GetSequenceType()
-        {
-            return SequenceType::Seq;
-        }
-        
-        // декомпозиция
-        virtual T               GetFirst() = 0;
-        virtual T               GetLast() = 0;
-        virtual T               Get(int index) = 0;
-        virtual int             GetSize() = 0;
-        virtual Sequence<T>*    GetSubsequence(int startIndex, int endIndex) = 0;
-        
-        // операции
-        virtual void            Set(int index, T value) = 0;
-        virtual void            Resize(int newSize) = 0;
-        virtual void            Insert(int index, T item) = 0;
-        virtual void            Append(T item) = 0;
-        virtual void            Prepend(T item) = 0;
-        virtual Sequence<T>*    Concat(Sequence<T> & sequence) = 0;
-};
+    return SequenceType::Array;
+}
 
-template <class T> class ArraySequence : public Sequence<T>
+template <typename T>
+ArraySequence<T>::ArraySequence() : array(new DynamicArray<T>)
 {
-    public:
-        SequenceType GetSequenceType() override
-        {
-            return SequenceType::Array;
-        }
-        
-        ArraySequence() : 
-            array(DynamicArray<T>()) 
-        { }
+}
 
-        ArraySequence(int count) : 
-            array(DynamicArray<T>(count))
-        { }
-
-        ArraySequence(T* items, int count) : 
-            array(DynamicArray<T>(items, count))
-        { }
-
-        ArraySequence(const Sequence<T> & sequence) : 
-            array(DynamicArray<T>())  
-        {
-            if (sequence->GetSequenceType() == SequenceType::Array)
-                this->array = new DynamicArray<T>(sequence.array);
-            else if (sequence->GetSequenceType() == SequenceType::List)
-                this->array = LinkedListToDynamicArray(sequence.list);
-        }
-
-        T GetFirst() override
-        {
-            return this->array->GetFirst();
-        }
-
-        T GetLast() override
-        {
-            return this->array->GetLast();
-        }
-
-        T Get(int index) override
-        {
-            return this->array->Get(index);
-        }
-
-        int GetSize() override
-        {
-            return this->array->GetSize();
-        }
-
-        Sequence<T>* GetSubsequence(int startIndex, int endIndex)
-        {
-            DynamicArray<T>* subArray = this->array.GetSubsequence(startIndex, endIndex);
-            ArraySequence<T>* output = new ArraySequence();
-            output->array = subArray;
-            return output;
-        }
-    
-        void Set(int index, T value) override
-        {
-            this->array->Set(index, value);
-        }
-
-        void Resize(int newSize) override
-        {
-            this->array->Resize(newSize);
-        }
-
-        void Insert(int index, T item) override
-        {
-            this->array->Insert(index, item);
-        }
-
-        void Append(T item) override
-        {
-            this->array->Append(item);
-        }
-
-        void Prepend(T item) override
-        {
-            this->array->Prepend(item);
-        }
-
-        Sequence<T>* Concat(Sequence<T> & sequence)
-        {
-            DynamicArray<T>* concatArray;
-            if (sequence.GetSequenceType() == SequenceType::Array)
-            {
-                concatArray = this->array->Concat(*(sequence->array));
-            }
-            else if (sequence.GetSequenceType() == SequenceType::List)
-            {
-                DynamicArray<T>* listToArray = LinkedListToDynamicArray (*(sequence.list));
-                concatArray = this->array->Concat(*(listToArray));
-                delete listToArray;
-            }
-            ArraySequence<T>* output = new ArraySequence;
-            output->array = concatArray; 
-        }
-
-    private:
-        DynamicArray<T>* array;
-};
-
-template <class T> class ListSequence : public Sequence<T>
+template <typename T>
+ArraySequence<T>::ArraySequence(int count) : array(new DynamicArray<T>(count))
 {
-    public:
-        SequenceType GetSequenceType() override
-        {
-            return SequenceType::List;
-        }
-        
-        ListSequence() : 
-            list(LinkedList<T>()) 
-        { }
+}
 
-        ListSequence(int count) : 
-            list(LinkedList<T>(count))
-        { }
-
-        ListSequence(T* items, int count) : 
-            list(LinkedList<T>(items, count))
-        { }
-
-        ListSequence(const Sequence<T> & sequence) : 
-            list(LinkedList<T>())  
-        {
-            if (sequence->GetSequenceType() == SequenceType::Array)
-                this->list = DynamicArrayToLinkedList(*(sequence.array));
-            else if (sequence->GetSequenceType() == SequenceType::List)
-                this->list = new LinkedList<T>(*(sequence.list));
-        }
-
-        T GetFirst() override
-        {
-            return this->list->GetFirst();
-        }
-
-        T GetLast() override
-        {
-            return this->list->GetLast();
-        }
-
-        T Get(int index) override
-        {
-            return this->list->Get(index);
-        }
-
-        int GetSize() override
-        {
-            return this->list->GetSize();
-        }
-
-        Sequence<T>* GetSubsequence(int startIndex, int endIndex)
-        {
-            LinkedList<T>* subArray = this->list.GetSubsequence(startIndex, endIndex);
-            ListSequence<T>* output = new ListSequence();
-            output->list = subArray;
-            return output;
-        }
-    
-        void Set(int index, T value) override
-        {
-            this->list->Set(index, value);
-        }
-
-        void Resize(int newSize) override
-        {
-            this->list->Resize(newSize);
-        }
-
-        void Insert(int index, T item) override
-        {
-            this->list->Insert(index, item);
-        }
-
-        void Append(T item) override
-        {
-            this->list->Append(item);
-        }
-
-        void Prepend(T item) override
-        {
-            this->list->Prepend(item);
-        }
-
-        Sequence<T>* Concat(Sequence<T> & sequence)
-        {
-            LinkedList<T>* concatList;
-            if (sequence.GetSequenceType() == SequenceType::Array)
-            {
-                LinkedList<T>* arrayToList = DynamicArrayToLinkedList (*(sequence.array));
-                concatList = this->list->Concat(*(arrayToList));
-                delete arrayToList;
-            }
-            else if (sequence.GetSequenceType() == SequenceType::List)
-            {
-                concatList = this->list->Concat(*(sequence->list));
-            }
-            ListSequence<T>* output = new LinkedList<T>;
-            output->list = concatList; 
-        }
-
-    private:
-        LinkedList<T>* list;
-};
-
-
-int main ()
+template <typename T>
+ArraySequence<T>::ArraySequence(T *items, int count) : array(new DynamicArray<T>(items, count))
 {
-    std::cout << "11";
+}
+
+template <typename T>
+ArraySequence<T>::ArraySequence(const ArraySequence<T> &arraySequence) : array(new DynamicArray<T>(*(arraySequence.array)))
+{
+}
+
+template <typename T>
+ArraySequence<T>::ArraySequence(const ListSequence<T> &listSequence) : array(LinkedListToDynamicArray(*(listSequence.list)))
+{
+}
+
+// декомпозиция
+template <typename T>
+T ArraySequence<T>::GetFirst()
+{
+    return this->array->GetFirst();
+}
+
+template <typename T>
+T ArraySequence<T>::GetLast()
+{
+    return this->array->GetLast();
+}
+
+template <typename T>
+T ArraySequence<T>::Get(int index)
+{
+    return this->array->Get(index);
+}
+
+template <typename T>
+int ArraySequence<T>::GetSize()
+{
+    return this->array->GetSize();
+}
+
+template <typename T>
+Sequence<T> *ArraySequence<T>::GetSubsequence(int startIndex, int endIndex)
+{
+    DynamicArray<T> *subArray = this->array.GetSubsequence(startIndex, endIndex);
+    ArraySequence<T> *output = new ArraySequence();
+    output->array = subArray;
+    return output;
+}
+
+//операции
+template <typename T>
+void ArraySequence<T>::Set(int index, T value)
+{
+    this->array->Set(index, value);
+}
+
+template <typename T>
+void ArraySequence<T>::Resize(int newSize)
+{
+    this->array->Resize(newSize);
+}
+
+template <typename T>
+void ArraySequence<T>::Insert(int index, T item)
+{
+    this->array->Insert(index, item);
+}
+
+template <typename T>
+void ArraySequence<T>::Append(T item)
+{
+    this->array->Append(item);
+}
+
+template <typename T>
+void ArraySequence<T>::Prepend(T item)
+{
+    this->array->Prepend(item);
+}
+
+template <typename T>
+Sequence<T>* ArraySequence<T>::Concat(ArraySequence<T>& arraySequence)
+{
+    DynamicArray<T>* concatArray;
+    concatArray = this->array->Concat(*(arraySequence->array));
+    ArraySequence<T>* output = new ArraySequence;
+    output->array = concatArray;
+    return output;
+}
+
+template <typename T>
+Sequence<T>* ArraySequence<T>::Concat(ListSequence<T>& listSequence)
+{
+    DynamicArray<T>* listToArray = LinkedListToDynamicArray(*(listSequence.list));
+    DynamicArray<T>* concatArray;
+    concatArray = this->array->Concat(*(listToArray));
+    delete listToArray;
+    ArraySequence<T>* output = new ArraySequence;
+    output->array = concatArray;
+    return output;
+}
+
+// ListSequence<T>::
+
+//конструкторы
+template <typename T>
+SequenceType ListSequence<T>::GetSequenceType() 
+{
+    return SequenceType::List;
+}
+template <typename T>
+ListSequence<T>::ListSequence() : list(new LinkedList<T>())
+{
+}
+template <typename T>
+ListSequence<T>::ListSequence(int count) : list(new LinkedList<T>(count))
+{
+}
+template <typename T>
+ListSequence<T>::ListSequence(T *items, int count) : list(new LinkedList<T>(items, count))
+{
+}
+
+template <typename T>
+ListSequence<T>::ListSequence(const ArraySequence<T> & arraySequence) : list(DynamicArrayToLinkedList(*(arraySequence.array)))
+{
+}
+
+template <typename T>       
+ListSequence<T>::ListSequence(const ListSequence<T> &listSequence) : list(new ListSequence<T>(*(listSequence.list)))
+{
+}
+
+
+template <typename T>
+T ListSequence<T>::GetFirst() 
+{
+    return this->list->GetFirst();
+}
+template <typename T>
+T ListSequence<T>::GetLast() 
+{
+    return this->list->GetLast();
+}
+template <typename T>
+T ListSequence<T>::Get(int index) 
+{
+    return this->list->Get(index);
+}
+template <typename T>
+int ListSequence<T>::GetSize() 
+{
+    return this->list->GetSize();
+}
+template <typename T>
+Sequence<T>* ListSequence<T>::GetSubsequence(int startIndex, int endIndex)
+{
+    LinkedList<T> *subArray = this->list.GetSubsequence(startIndex, endIndex);
+    ListSequence<T> *output = new ListSequence();
+    output->list = subArray;
+    return output;
+}
+template <typename T>
+void ListSequence<T>::Set(int index, T value)
+{
+    this->list->Set(index, value);
+}
+template <typename T>
+void ListSequence<T>::Resize(int newSize) 
+{
+    this->list->Resize(newSize);
+}
+template <typename T>
+void ListSequence<T>::Insert(int index, T item) 
+{
+    this->list->Insert(index, item);
+}
+template <typename T>
+void ListSequence<T>::Append(T item) 
+{
+    this->list->Append(item);
+}
+template <typename T>
+void ListSequence<T>::Prepend(T item) 
+{
+    this->list->Prepend(item);
+}
+
+template <typename T>
+Sequence<T>* ListSequence<T>::Concat(ArraySequence<T>& arraySequence)
+{
+    LinkedList<T>* arrayToList = DynamicArrayToLinkedList(*(arraySequence.array));
+    LinkedList<T>* concatList;
+    concatList = this->list->Concat(*(arrayToList));
+    delete arrayToList;
+    ListSequence<T>* output = new ListSequence;
+    output->list = concatList;
+    return output;
+}
+
+template <typename T>
+Sequence<T>* ListSequence<T>::Concat(ListSequence<T> &listSequence)
+{
+    LinkedList<T>* concatList;
+    concatList = this->list->Concat(*(listSequence->list));
+    ListSequence<T>* output = new ListSequence;
+    output->list = concatList;
+    return output;
+}
+
+
+int main()
+{
+    std::cout << "hello";
 }
