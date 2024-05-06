@@ -306,14 +306,14 @@ template <class T> class LinkedList
         T GetFirst()
         {
             if (this->head == nullptr)
-                throw IndexOutOfRange("Function 'GetFirst': List is empty.");
+                throw IndexOutOfRange("Function 'Get': List is empty.");
             return this->head->item;
         }
 
         T GetLast()
         {
             if (this->head == nullptr)
-                throw IndexOutOfRange("Function 'GetLast': List is empty.");
+                throw IndexOutOfRange("Function 'Get': List is empty.");
             return this->tail->item;
         }
 
