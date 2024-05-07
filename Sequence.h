@@ -1,6 +1,4 @@
-#ifndef SEQUENCE_H
-#define SEQUENCE_H
-#include "DynamicArray&LinkedList.h"
+#include "DynamicArrayAndLinkedList.h"
 enum SequenceType
 {
     Seq,
@@ -8,6 +6,7 @@ enum SequenceType
     List
 };
 
+template <typename T> class ArraySequence;
 template <typename T> class ListSequence;
 
 template <typename T> class Sequence
@@ -15,19 +14,20 @@ template <typename T> class Sequence
     public:
         // декомпозиция
         virtual SequenceType    GetSequenceType();
-        virtual T               GetFirst()              = 0;
-        virtual T               GetLast()               = 0;
-        virtual T               Get(int)                = 0;
-        virtual int             GetSize()               = 0;
-        virtual Sequence<T>*    GetSubsequence(int, int)= 0;
+        virtual T               GetFirst()                  = 0;
+        virtual T               GetLast()                   = 0;
+        virtual T               Get(int)                    = 0;
+        virtual int             GetSize()                   = 0;
+        virtual Sequence<T>*    GetSubsequence(int, int)    = 0;
         
         // операции
-        virtual void            Set(int, T)             = 0;
-        virtual void            Resize(int)             = 0;
-        virtual void            Insert(int, T)          = 0;
-        virtual void            Append(T)               = 0;
-        virtual void            Prepend(T)              = 0;
-        virtual Sequence<T>*    Concat(Sequence<T> &)   = 0;
+        virtual void            Set(int, T)                 = 0;
+        virtual void            Resize(int)                 = 0;
+        virtual void            Insert(int, T)              = 0;
+        virtual void            Append(T)                   = 0;
+        virtual void            Prepend(T)                  = 0;
+        virtual Sequence<T>*    Concat(ArraySequence<T> &)  = 0;
+        virtual Sequence<T>*    Concat(ListSequence<T> &)   = 0;
 };
 
 template <typename T> class ArraySequence : public Sequence<T>
@@ -56,7 +56,7 @@ template <typename T> class ArraySequence : public Sequence<T>
         void            Prepend(T)                  override;
         Sequence<T>*    Concat(ArraySequence<T> &)  override;
         Sequence<T>*    Concat(ListSequence<T> &)   override;
-    private:
+        
         DynamicArray<T>* array;
 };
 
@@ -87,9 +87,5 @@ template <typename T> class ListSequence : public Sequence<T>
         Sequence<T>*    Concat(ArraySequence<T> &)  override;
         Sequence<T>*    Concat(ListSequence<T> &)   override;
 
-
-    private:
         LinkedList<T>*  list;
 };
-
-#endif

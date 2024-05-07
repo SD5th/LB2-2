@@ -34,7 +34,7 @@ void testGetFirst_EmptyList()
     }
     catch (const IndexOutOfRange &excep)
     {
-        assert(std::string(excep.what()) == "Function 'GetFirst': List is empty.");
+        assert(std::string(excep.what()) == "Function 'Get': List is empty.");
     }
 
     std::cout << "testGetFirst_EmptyList: OK\n";
@@ -50,7 +50,7 @@ void testGetLast_EmptyList()
     }
     catch (const IndexOutOfRange &excep)
     {
-        assert(std::string(excep.what()) == "Function 'GetLast': List is empty.");
+        assert(std::string(excep.what()) == "Function 'Get': List is empty.");
     }
 
     std::cout << "testGetLast_EmptyList: OK\n";
@@ -335,6 +335,45 @@ void testConcat_NonEmptyLists()
     std::cout << "testConcat_NonEmptyLists: OK\n";
 }
 
+void testResize_FromEmpty()
+{
+    LinkedList<int> list;
+    list.Resize(3);
+    assert(list.GetSize() == 3);
+    
+    std::cout << "testResize_FromEmpty: OK\n";
+}
+
+void testResize_ToEmpty()
+{
+    LinkedList<int> list(3);
+    
+    list.Resize(0);
+    assert(list.GetSize() == 0);
+    
+    std::cout << "testResize_ToEmpty: OK\n";
+}
+
+void testResize_Increase()
+{
+    LinkedList<int> list(3);
+    
+    list.Resize(5);
+    assert(list.GetSize() == 5);
+    
+    std::cout << "testResize_Increase: OK\n";
+}
+
+void testResize_Decrease()
+{
+    LinkedList<int> list(5);
+    
+    list.Resize(3);
+    assert(list.GetSize() == 3);
+    
+    std::cout << "testResize_Decrease: OK\n";
+}
+
 int main()
 {
     testConstructors();
@@ -361,4 +400,8 @@ int main()
     testGetSubsequence_EndIndexGreaterThanSize();
     testGetSubsequence_PartOfList();
     testConcat_NonEmptyLists();
+    testResize_FromEmpty();
+    testResize_ToEmpty();
+    testResize_Increase();
+    testResize_Decrease();
 }

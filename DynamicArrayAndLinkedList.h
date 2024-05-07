@@ -80,12 +80,12 @@ template <class T> class DynamicArray
 
         T Get(int index)    //Получить элемент по индексу
         {
+            if (this->GetSize() == 0)
+                throw IndexOutOfRange("Function 'Get': List is empty.");
             if (index < 0) 
                 throw IndexOutOfRange("Function 'Get': Negative index.");
             if (index >= this->size) 
                 throw IndexOutOfRange("Function 'Get': Index is greater than size.");
-            if (this->GetSize() == 0)
-                throw IndexOutOfRange("Function 'Get': List is empty.");
             return *(this->data + index);
         }
 
@@ -134,6 +134,8 @@ template <class T> class DynamicArray
 
         void Resize(int newSize)        
         {
+            if (newSize < 0)
+                throw IndexOutOfRange("Function 'Resize': Negative size.");
             if ((this->capacity >= newSize) && (newSize >= this->capacity/4))
             {
                 this->size = newSize;
@@ -171,7 +173,8 @@ template <class T> class DynamicArray
             else
             {
                 this->size += 1;
-                T* data_temp = new T [this->size * 2];
+                this->capacity = 2 * this->size;
+                T* data_temp = new T [this->capacity];
                 for (int i = 0; i < index; i++)
                 {
                     *(data_temp + i) = *(this->data + i);
@@ -181,6 +184,8 @@ template <class T> class DynamicArray
                 {
                     *(data_temp + i) = *(this->data + i - 1);
                 }
+                delete[] this->data;
+                this->data = data_temp;                
             }   
         }
 
@@ -349,7 +354,17 @@ template <class T> class LinkedList
         void Append(T item)
         {
             Node* last = new Node(item);
-            if (this-> head == nullptr)
+            if (this->head == nullptr)
+                this->head = last;
+            else
+                this->tail->next = last;
+            this->tail = last;
+        }
+
+        void Append()
+        {
+            Node* last = new Node;
+            if (this->head == nullptr)
                 this->head = last;
             else
                 this->tail->next = last;
@@ -364,6 +379,55 @@ template <class T> class LinkedList
             else
                 first->next = this->head;
             this->head = first;
+        }
+
+        void Resize(int newSize)
+        {
+            if (newSize < 0)
+                throw IndexOutOfRange("Function 'Resize': Negative size.");
+            if (newSize == 0)
+            {
+                Node* del = this->head;
+                Node* next;
+                while (del != nullptr)
+                {
+                    next = del->next;
+                    delete del;
+                    del = next;
+                }
+                this->head = nullptr;
+                this->tail = nullptr;
+                return;
+            }
+            int oldSize = this->GetSize();
+            if (newSize < oldSize)
+            {
+                Node* del = this->head;
+                for (int i = 0; i < newSize - 1; i++)
+                {
+                    del = del->next;
+                }
+                this->tail = del;
+                del = del->next;
+                Node* next;
+                while (del != nullptr)
+                {
+                    next = del->next;
+                    delete del;
+                    del = next;
+                }
+                this->tail->next = nullptr;
+            }
+            else if (oldSize < newSize)
+            {
+                Node* prev = this->tail;
+                Node* app;
+                for (int i = oldSize; i < newSize; i++)
+                {
+                    this->Append();
+                }
+            }            
+            
         }
 
         void Set(int index, T value)
@@ -456,7 +520,7 @@ template <class T> class LinkedList
             Node* tail;  
 };
 
-template <class T> DynamicArray<T>* LinkedListToDynamicArray (const LinkedList<T> & linkedList)
+template <class T> DynamicArray<T>* LinkedListToDynamicArray (LinkedList<T> & linkedList)
 {
     DynamicArray<T>* dynamicArray = new DynamicArray<T>(linkedList.GetSize());
     for (int i = 0; i < dynamicArray->GetSize(); i++)
@@ -466,7 +530,7 @@ template <class T> DynamicArray<T>* LinkedListToDynamicArray (const LinkedList<T
     return dynamicArray;
 }
 
-template <class T> LinkedList<T>* DynamicArrayToLinkedList (const DynamicArray<T> & dynamicArray)
+template <class T> LinkedList<T>* DynamicArrayToLinkedList (DynamicArray<T> & dynamicArray)
 {
     LinkedList<T>* linkedList = new LinkedList<T>;
     for (int i = 0; i < dynamicArray.GetSize(); i++)
