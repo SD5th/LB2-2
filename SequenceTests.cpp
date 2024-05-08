@@ -636,7 +636,7 @@ void TestConcat_ListSequence()
     std::cout << "TestConcat_ListSequence: OK\n";
 }
 
-int main()
+void ALLTESTS_SEQUENCE()
 {
     std::cout << "Tests ArraySequence\n\n";
     Test_DefaultConstructor_ArraySequence();
@@ -678,7 +678,4 @@ int main()
     TestConstructor_WithArray_ListSequence();
     TestCopyConstructor_ListSequence();
     TestConcat_ListSequence();
-
-    int end;
-    std::cin >> end;
 }
