@@ -1,5 +1,7 @@
 #include <iostream>
 
+#pragma once
+
 class IndexOutOfRange : public std::exception
 {
     public:

@@ -1,4 +1,7 @@
 #include "DynamicArrayAndLinkedList.h"
+
+#pragma once
+
 enum SequenceType
 {
     Seq,

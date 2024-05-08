@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Sequence.cpp"
-
+#include "Sequence.h"
+#include <vector>
 using namespace std;
 
 enum GeneralDialogueOption
@@ -9,10 +9,8 @@ enum GeneralDialogueOption
     OperationWithObject,
     Help,
     Exit,
-    Unknown
-};
-
-//enum 
+    UnknownDialogueOption
+}; 
 
 GeneralDialogueOption UserTextToDialogueOption(const string & UserText)
 {
@@ -20,15 +18,24 @@ GeneralDialogueOption UserTextToDialogueOption(const string & UserText)
         return Help;
     if (UserText == "Exit")
         return Exit;
-    return Unknown;
+    return UnknownDialogueOption;
 }
 
 int main(){
     setlocale(LC_ALL, "");
-    cout << "Введите 'Help', чтобы увидеть список доступных команд.\n";
-    bool UI = true;
+    ArraySequence<Sequence<int>*> ass;
+    //ArraySequence<Sequence<int>> ArrayOfSequences;
     string UserText;
-    while(UI)
+    
+    cout << "───▄▀▀▀▄▄▄▄▄▄▄▀▀▀▄───                                      \n"
+         << "───█▒▒░░░░░░░░░▒▒█───      Приветствую всех пользователей  \n"
+         << "────█░░█░░░░░█░░█────    прикольной оболочки АТД 'Sequence'\n"
+         << "─▄▄──█░░░▀█▀░░░█──▄▄─       Если не знаешь, что сделать,   \n"
+         << "█░░█─▀▄░░░░░░░▄▀─█░░█                пиши  help            \n"
+         << "█░░█──█░░░░░░░█──█░░█                                      \n";
+         
+
+    while(bool UI = true == true)
     {
         getline(cin, UserText);
 
