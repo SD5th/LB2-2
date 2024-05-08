@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "Sequence.h"
+#include "Sequence.cpp"
 
 void Test_DefaultConstructor_ArraySequence()
 {

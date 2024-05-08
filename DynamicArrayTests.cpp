@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "DynamicArray&LinkedList.h"
+#include "DynamicArrayAndLinkedList.h"
 
 void testDefaultConstructor()
 {
@@ -258,4 +258,6 @@ int main()
     testGetSubsequence_ThrowsException_NegativeStartIndex();
     testGetSubsequence_ThrowsException_StartIndexGreaterThanEndIndex();
     testGetSubsequence_ThrowsException_EndIndexOutOfSize();
+    int end;
+    std::cin >> end;
 }
