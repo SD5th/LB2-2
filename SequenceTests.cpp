@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "Sequence.cpp"
+#include "Sequence.h"
 
 void Test_DefaultConstructor_ArraySequence()
 {
@@ -294,6 +294,7 @@ void Test_Concat_FromArraySequence_ArraySequence()
     assert(result->Get(4) == 5);
 
     std::cout << "TestConcatFromArraySequence_ArraySequence: OK\n";
+    delete result;
 }
 
 void Test_Concat_FromListSequence_ArraySequence()
@@ -316,6 +317,7 @@ void Test_Concat_FromListSequence_ArraySequence()
     assert(result->Get(4) == 5);
 
     std::cout << "TestConcatFromListSequence_ArraySequence: OK\n";
+    delete result;
 }
 
 void Test_Concat_Empty_FromArraySequence_ArraySequence()
@@ -333,6 +335,7 @@ void Test_Concat_Empty_FromArraySequence_ArraySequence()
     assert(result->Get(2) == 3);
 
     std::cout << "TestConcatEmptyFromArraySequence_ArraySequence: OK\n";
+    delete result;
 }
 
 void Test_Concat_Empty_FromListSequence_ArraySequence()
@@ -350,6 +353,7 @@ void Test_Concat_Empty_FromListSequence_ArraySequence()
     assert(result->Get(2) == 3);
 
     std::cout << "TestConcatEmptyFromListSequence_ArraySequence: OK\n";
+    delete result;
 }
 
 void Test_Concat_EmptyToNonEmpty_FromArraySequence_ArraySequence()
@@ -366,6 +370,7 @@ void Test_Concat_EmptyToNonEmpty_FromArraySequence_ArraySequence()
     assert(result->Get(1) == 2);
 
     std::cout << "TestConcatEmptyToNonEmptyFromArraySequence_ArraySequence: OK\n";
+    delete result;
 }
 
 void Test_Concat_EmptyToNonEmpty_FromListSequence_ArraySequence()
@@ -382,6 +387,7 @@ void Test_Concat_EmptyToNonEmpty_FromListSequence_ArraySequence()
     assert(result->Get(1) == 2);
 
     std::cout << "TestConcatEmptyToNonEmptyFromListSequence_ArraySequence: OK\n";
+    delete result;
 }
 
 ///////////////
@@ -499,6 +505,7 @@ void TestGetSubsequence_InvalidIndices_ListSequence()
     try
     {
         Sequence<int> *subsequence2 = list.GetSubsequence(3, 2);
+        delete subsequence2;
         assert(false); // Ожидается исключение IndexOutOfRange
     }
     catch (const IndexOutOfRange &excep)
@@ -533,6 +540,7 @@ void TestGetSubsequence_FullList_ListSequence()
     assert(subsequence->Get(2) == 3);
 
     std::cout << "TestGetSubsequence_FullList_ListSequence: OK\n";
+    delete subsequence;
 }
 
 void TestGetSubsequence_PartList_ListSequence()
@@ -547,6 +555,7 @@ void TestGetSubsequence_PartList_ListSequence()
     assert(subsequence->Get(0) == 2);
 
     std::cout << "TestGetSubsequence_PartList_ListSequence: OK\n";
+    delete subsequence;
 }
 
 void TestDefaultConstructor_ListSequence()
@@ -634,6 +643,9 @@ void TestConcat_ListSequence()
     }
 
     std::cout << "TestConcat_ListSequence: OK\n";
+    
+    delete sequence1;
+    delete sequence2;
 }
 
 void ALLTESTS_SEQUENCE()
