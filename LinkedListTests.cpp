@@ -376,6 +376,7 @@ void testResize_Decrease()
 
 void ALLTESTS_LINKED_LIST()
 {
+    std::cout << "\nTESTS LINKED LIST:\n\n";
     testConstructors();
     testGetFirst_EmptyList();
     testGetLast_EmptyList();

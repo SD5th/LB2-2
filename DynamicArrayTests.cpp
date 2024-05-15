@@ -240,6 +240,8 @@ void testGetSubsequence_ThrowsException_EndIndexOutOfSize()
 
 void ALLTESTS_DYNAMIC_ARRAY()
 {
+    std::cout << "\nTESTS DYNAMIC ARRAY:\n\n";
+
     testDefaultConstructor();
     testCountConstructor();
     testCountConstructorFromPointer();

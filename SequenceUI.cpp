@@ -1,6 +1,9 @@
 #include "C:\Main\Kodiki\C++\SimpleConsoleUI\SimpleConsoleUI.h"
 #include "Sequence.h"
 #include "SequenceTests.cpp"
+#include "DynamicArrayTests.cpp"
+#include "LinkedListTests.cpp"
+
 
 ArraySequence<Sequence<int>*> Sequences;
 ArraySequence<string> SequenceNames;
@@ -152,6 +155,8 @@ void PrependOperation_Function()
  
 void Test_Function()
 {
+    ALLTESTS_DYNAMIC_ARRAY();
+    ALLTESTS_LINKED_LIST();
     ALLTESTS_SEQUENCE();
 }
 

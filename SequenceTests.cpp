@@ -650,7 +650,7 @@ void TestConcat_ListSequence()
 
 void ALLTESTS_SEQUENCE()
 {
-    std::cout << "Tests ArraySequence\n\n";
+    std::cout << "\nTESTS ARRAY SEQUENCE\n\n";
     Test_DefaultConstructor_ArraySequence();
     Test_SizeConstructor_ArraySequence();
     Test_CountConstructorFromPointer_ArraySequence();
@@ -675,7 +675,7 @@ void ALLTESTS_SEQUENCE()
     Test_Concat_Empty_FromListSequence_ArraySequence();
     Test_Concat_EmptyToNonEmpty_FromArraySequence_ArraySequence();
     Test_Concat_EmptyToNonEmpty_FromListSequence_ArraySequence();
-    std::cout << "\nTests ListSequence:\n\n";
+    std::cout << "\nTESTS LIST SEQUENCE:\n\n";
     TestGetSequenceType_ListSequence();
     TestGetters_EmptyList_ListSequence();
     TestGetters_WithElements_ListSequence();
