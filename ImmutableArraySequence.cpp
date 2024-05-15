@@ -4,7 +4,7 @@ template <typename T>
 class ImmutableArraySequence;
 
 template <typename T>
-class Sequence
+class ImmutableSequence
 {
 public:
     // декомпозиция
@@ -12,19 +12,19 @@ public:
     virtual T GetLast() = 0;
     virtual T Get(int) = 0;
     virtual int GetSize() = 0;
-    virtual Sequence<T> *GetSubsequence(int, int) = 0;
+    virtual ImmutableSequence<T> *GetSubsequence(int, int) = 0;
 
     // операции
-    virtual Sequence<T> *Set(int, T) = 0;
-    virtual Sequence<T> *Resize(int) = 0;
-    virtual Sequence<T> *Insert(int, T) = 0;
-    virtual Sequence<T> *Append(T) = 0;
-    virtual Sequence<T> *Prepend(T) = 0;
-    virtual Sequence<T> *Concat(ImmutableArraySequence<T> &) = 0;
+    virtual ImmutableSequence<T> *Set(int, T) = 0;
+    virtual ImmutableSequence<T> *Resize(int) = 0;
+    virtual ImmutableSequence<T> *Insert(int, T) = 0;
+    virtual ImmutableSequence<T> *Append(T) = 0;
+    virtual ImmutableSequence<T> *Prepend(T) = 0;
+    virtual ImmutableSequence<T> *Concat(ImmutableArraySequence<T> &) = 0;
 };
 
 template <typename T>
-class ImmutableArraySequence : public Sequence<T>
+class ImmutableArraySequence : public ImmutableSequence<T>
 {
 public:
     // конструкторы
@@ -38,15 +38,15 @@ public:
     T GetLast() override;
     T Get(int) override;
     int GetSize() override;
-    Sequence<T> *GetSubsequence(int, int) override;
+    ImmutableSequence<T> *GetSubsequence(int, int) override;
 
     // операции
-    Sequence<T> *Set(int, T) override;
-    Sequence<T> *Resize(int) override;
-    Sequence<T> *Insert(int, T) override;
-    Sequence<T> *Append(T) override;
-    Sequence<T> *Prepend(T) override;
-    Sequence<T> *Concat(ImmutableArraySequence<T> &) override;
+    ImmutableSequence<T> *Set(int, T) override;
+    ImmutableSequence<T> *Resize(int) override;
+    ImmutableSequence<T> *Insert(int, T) override;
+    ImmutableSequence<T> *Append(T) override;
+    ImmutableSequence<T> *Prepend(T) override;
+    ImmutableSequence<T> *Concat(ImmutableArraySequence<T> &) override;
 
     DynamicArray<T> *array;
 };
@@ -98,7 +98,7 @@ int ImmutableArraySequence<T>::GetSize()
 }
 
 template <typename T>
-Sequence<T> *ImmutableArraySequence<T>::GetSubsequence(int startIndex, int endIndex)
+ImmutableSequence<T> *ImmutableArraySequence<T>::GetSubsequence(int startIndex, int endIndex)
 {
     DynamicArray<T> *subArray = this->array->GetSubsequence(startIndex, endIndex);
     ImmutableArraySequence<T> *output = new ImmutableArraySequence;
@@ -108,7 +108,7 @@ Sequence<T> *ImmutableArraySequence<T>::GetSubsequence(int startIndex, int endIn
 
 // операции
 template <typename T>
-Sequence<T> *ImmutableArraySequence<T>::Set(int index, T value)
+ImmutableSequence<T> *ImmutableArraySequence<T>::Set(int index, T value)
 {
     ImmutableArraySequence<T> *output = new ImmutableArraySequence(*this);
     output->array->Set(index, value);
@@ -116,7 +116,7 @@ Sequence<T> *ImmutableArraySequence<T>::Set(int index, T value)
 }
 
 template <typename T>
-Sequence<T> *ImmutableArraySequence<T>::Resize(int newSize)
+ImmutableSequence<T> *ImmutableArraySequence<T>::Resize(int newSize)
 {
     ImmutableArraySequence<T> *output = new ImmutableArraySequence(*this);
     output->array->Resize(newSize);
@@ -124,7 +124,7 @@ Sequence<T> *ImmutableArraySequence<T>::Resize(int newSize)
 }
 
 template <typename T>
-Sequence<T> *ImmutableArraySequence<T>::Insert(int index, T item)
+ImmutableSequence<T> *ImmutableArraySequence<T>::Insert(int index, T item)
 {
     ImmutableArraySequence<T> *output = new ImmutableArraySequence(*this);
     output->array->Insert(index, item);
@@ -132,7 +132,7 @@ Sequence<T> *ImmutableArraySequence<T>::Insert(int index, T item)
 }
 
 template <typename T>
-Sequence<T> *ImmutableArraySequence<T>::Append(T item)
+ImmutableSequence<T> *ImmutableArraySequence<T>::Append(T item)
 {
     ImmutableArraySequence<T> *output = new ImmutableArraySequence(*this);
     output->array->Append(item);
@@ -140,7 +140,7 @@ Sequence<T> *ImmutableArraySequence<T>::Append(T item)
 }
 
 template <typename T>
-Sequence<T> *ImmutableArraySequence<T>::Prepend(T item)
+ImmutableSequence<T> *ImmutableArraySequence<T>::Prepend(T item)
 {
     ImmutableArraySequence<T> *output = new ImmutableArraySequence(*this);
     output->array->Prepend(item);
@@ -148,7 +148,7 @@ Sequence<T> *ImmutableArraySequence<T>::Prepend(T item)
 }
 
 template <typename T>
-Sequence<T> *ImmutableArraySequence<T>::Concat(ImmutableArraySequence<T> &arraySequence)
+ImmutableSequence<T> *ImmutableArraySequence<T>::Concat(ImmutableArraySequence<T> &arraySequence)
 {
     DynamicArray<T> *concatArray;
     concatArray = this->array->Concat(*(arraySequence.array));
