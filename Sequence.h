@@ -32,6 +32,8 @@ template <typename T> class Sequence
         virtual Sequence<T>*    Concat(ArraySequence<T> &)  = 0;
         virtual Sequence<T>*    Concat(ListSequence<T> &)   = 0;
 
+        // перегрузка операторов
+        virtual T&              operator[](int)             = 0;
 };
 
 template <typename T> class ArraySequence : public Sequence<T>
@@ -62,6 +64,9 @@ template <typename T> class ArraySequence : public Sequence<T>
         Sequence<T>*    Concat(ArraySequence<T> &)  override;
         Sequence<T>*    Concat(ListSequence<T> &)   override;
         
+        // перегрузка операторов
+        T&              operator[](int)             override;
+
         DynamicArray<T>* array;
 };
 
@@ -92,6 +97,9 @@ template <typename T> class ListSequence : public Sequence<T>
         void            Prepend(T)                  override;
         Sequence<T>*    Concat(ArraySequence<T> &)  override;
         Sequence<T>*    Concat(ListSequence<T> &)   override;
+
+        // перегрузка операторов
+        T&              operator[](int)             override;
 
         LinkedList<T>*  list;
 };
@@ -233,6 +241,14 @@ template <typename T> class ListSequence : public Sequence<T>
             return output;
         }
 
+    // перегрузка операторов
+        template <typename T>
+        T&           ArraySequence<T>::operator[](int index)
+        {
+            return array[index];
+        }
+
+
 // ListSequence<T>::
     // конструкторы
         template <typename T>
@@ -356,4 +372,11 @@ template <typename T> class ListSequence : public Sequence<T>
             ListSequence<T> *output = new ListSequence;
             output->list = concatList;
             return output;
+        }
+
+    // перегрузка операторов
+        template <typename T>
+        T&           ListSequence<T>::operator[](int index)
+        {
+            return list[index];
         }

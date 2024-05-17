@@ -212,6 +212,17 @@ template <class T> class DynamicArray
             return output; 
         }
     
+    // перегрузка операторов
+        T &operator[] (int index) { 
+        if (this->GetSize() == 0)
+            throw IndexOutOfRangeForUI("Operator '[]': Array is empty.");
+        if (index < 0) 
+            throw IndexOutOfRangeForUI("Operator '[]': Negative index.");
+        if (index >= this->size) 
+            throw IndexOutOfRangeForUI("Operator '[]': Index is greater than size.");
+        return this->data[index];    
+    }
+
     //вспомогательное
         void printall()
         {
@@ -326,7 +337,6 @@ template <class T> class LinkedList
 
         T Get(int index)
         {
-
             if (index < 0)
                 throw IndexOutOfRange("Function 'Get': Negative index.");
             if (index >= this->GetSize())
@@ -507,6 +517,22 @@ template <class T> class LinkedList
             output->Append(current->item);
             return output;  
         }
+    
+    // перегрузка операторов
+        T &operator[] (int index) { 
+        if (this->GetSize() == 0)
+            throw IndexOutOfRangeForUI("Operator '[]': List is empty.");
+        if (index < 0) 
+            throw IndexOutOfRangeForUI("Operator '[]': Negative index.");
+        if (index >= GetSize()) 
+            throw IndexOutOfRangeForUI("Operator '[]': Index is greater than size.");
+        Node* current = this->head;
+        for (int i = 0; i < index; i++)
+        {
+            current = current->next;
+        }
+        return current->item;   
+    }
 
         void printall()
         {
