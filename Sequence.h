@@ -245,7 +245,7 @@ template <typename T> class ListSequence : public Sequence<T>
         template <typename T>
         T&           ArraySequence<T>::operator[](int index)
         {
-            return array[index];
+            return (*array)[index];
         }
 
 
@@ -378,5 +378,5 @@ template <typename T> class ListSequence : public Sequence<T>
         template <typename T>
         T&           ListSequence<T>::operator[](int index)
         {
-            return list[index];
+            return (*list)[index];
         }
