@@ -223,6 +223,6 @@ int main()
 
     Exit->Get_Connector()->Append_Shell(Head);
 
-    ActiveShell Active(Head);
+    ActiveShell Active(Head, ActiveShell::WindowsConsole);
     Active.StartUI();
 }
