@@ -20,7 +20,7 @@ template <typename T> class Sequence
         virtual T               GetFirst()                  = 0;
         virtual T               GetLast()                   = 0;
         virtual T               Get(int)                    = 0;
-        virtual int             GetSize()                   = 0;
+        virtual int             GetSize()                   const = 0;
         virtual Sequence<T>*    GetSubsequence(int, int)    = 0;
         
         // операции
@@ -33,7 +33,7 @@ template <typename T> class Sequence
         virtual Sequence<T>*    Concat(ListSequence<T> &)   = 0;
 
         // перегрузка операторов
-        virtual T&              operator[](int)             = 0;
+        virtual T&              operator[](int)             const = 0;
 };
 
 template <typename T> class ArraySequence : public Sequence<T>
@@ -52,7 +52,7 @@ template <typename T> class ArraySequence : public Sequence<T>
         T               GetFirst()                  override;
         T               GetLast()                   override;
         T               Get(int)                    override;
-        int             GetSize()                   override;
+        int             GetSize()                   const override;
         Sequence<T>*    GetSubsequence(int, int)    override;
 
         // операции 
@@ -65,7 +65,7 @@ template <typename T> class ArraySequence : public Sequence<T>
         Sequence<T>*    Concat(ListSequence<T> &)   override;
         
         // перегрузка операторов
-        T&              operator[](int)             override;
+        T&              operator[](int)             const override;
 
         DynamicArray<T>* array;
 };
@@ -86,7 +86,7 @@ template <typename T> class ListSequence : public Sequence<T>
         T               GetFirst()                  override;
         T               GetLast()                   override;
         T               Get(int)                    override;
-        int             GetSize()                   override;
+        int             GetSize()                   const override;
         Sequence<T>*    GetSubsequence(int, int)    override;
 
         // операции 
@@ -99,7 +99,7 @@ template <typename T> class ListSequence : public Sequence<T>
         Sequence<T>*    Concat(ListSequence<T> &)   override;
 
         // перегрузка операторов
-        T&              operator[](int)             override;
+        T&              operator[](int)             const override;
 
         LinkedList<T>*  list;
 };
@@ -174,7 +174,7 @@ template <typename T> class ListSequence : public Sequence<T>
         }
 
         template <typename T>
-        int ArraySequence<T>::GetSize()
+        int ArraySequence<T>::GetSize() const
         {
             return this->array->GetSize();
         }
@@ -243,7 +243,7 @@ template <typename T> class ListSequence : public Sequence<T>
 
     // перегрузка операторов
         template <typename T>
-        T&           ArraySequence<T>::operator[](int index)
+        T&           ArraySequence<T>::operator[](int index) const
         {
             return (*array)[index];
         }
@@ -307,7 +307,7 @@ template <typename T> class ListSequence : public Sequence<T>
         }
         
         template <typename T>
-        int ListSequence<T>::GetSize()
+        int ListSequence<T>::GetSize() const
         {
             return this->list->GetSize();
         }
@@ -376,7 +376,7 @@ template <typename T> class ListSequence : public Sequence<T>
 
     // перегрузка операторов
         template <typename T>
-        T&           ListSequence<T>::operator[](int index)
+        T&           ListSequence<T>::operator[](int index) const
         {
             return (*list)[index];
         }
